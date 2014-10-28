@@ -28,7 +28,7 @@
 >
 >> Aircraft_and_Components
 > 
-> ### 기본 단어형 번역하기 [translate/translate.html](translate/translate_line.html)
+> ### 셈플텍스트 포함 단어 번역하기 [translate/translate_line.html](translate/translate_line.html)
 >
 > 샘플 텍스트가 포함된 단어 (##)을 구분자로 사용
 >
