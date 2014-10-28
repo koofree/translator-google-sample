@@ -1,6 +1,6 @@
 __author__ = 'koo'
 
-open_file_name = 'finalTranslatorVocabulary.txt'
+open_file_name = 'writeCategoryNameKey_google.txt'
 open_file = open(open_file_name)
 
 total_count = 0

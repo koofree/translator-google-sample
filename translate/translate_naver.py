@@ -16,9 +16,9 @@ def cls():
 
 
 url = 'http://endic.naver.com/search.nhn?sLn=en&searchOption=entry_idiom&query='
-open_file_name = 'finalTranslatorVocabulary.txt'
+open_file_name = 'writeVocabularyNameKey_google.txt'
 sleep_time = 20
-translate_all = True
+translate_all = False
 
 
 def isProperNoun(word):
@@ -68,8 +68,12 @@ def err():
     print err
 
 
+def write(write_file, word1, word2):
+    write_file.write(word1.strip().decode('utf8') + ': ' + word2.strip() + '\n')
+
+
 open_file = open(open_file_name)
-write_file = codecs.open(open_file_name[:open_file_name.index('.')] + '_naver.txt', 'w', "utf-8")
+write_file = codecs.open(open_file_name[:open_file_name.index('.')] + '_naver.txt', 'w', "utf8")
 
 progress = 1
 
@@ -118,9 +122,9 @@ for line in open_file:
 
             write_word = final_word.strip()
             if write_word != '' and isProperNoun(write_word):
-                write_file.write(word.strip() + ': ' + write_word + '\n')
+                write(write_file, word, final_word)
             else:
-                write_file.write(word.strip() + ': ' + final_word + '\n')
+                write(write_file, word, final_word)
             fixed_count += 1
     else:
         write_file.write(word.strip().decode('utf8') + ': ' + final_word.decode('utf8') + '\n')
