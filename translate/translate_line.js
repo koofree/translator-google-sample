@@ -25,6 +25,7 @@ var divide_words = function (words, count) {
 var readFile = function (filename, callback) {
     $.get(filename, function (data) {
         var lines = data.split('\n');
+        var total = lines.length;
 
         $.each(lines, function (num, line) {
             if (line != '') {
@@ -34,14 +35,17 @@ var readFile = function (filename, callback) {
                 var line = split_line[1];
                 var replaced_line = line.replace(/\_/g, ' ');
                 setTimeout(function () {
-                    callback(replaced_word, replaced_line);
+                    translate(replaced_word, replaced_line, function (result) {
+                        var status = {num: num, total: total};
+                        callback(result, status);
+                    });
                 }, 200 * num);
             }
         });
     });
 };
 
-var translate = function (word, line) {
+var translate = function (word, line, callback) {
     if (line.length < 1) {
         line = word;
     }
@@ -55,25 +59,30 @@ var translate = function (word, line) {
                 translate(word, line);
             } else {
                 var res = eval(data);
-                var result = '';
                 var origin = res[5];
-                var index = -1;
-                for (var i = 0; i < origin.length; i++) {
-                    var origin_lower = origin[i][0].toLowerCase();
-                    var word_lower = word.toLowerCase();
-                    if (origin_lower.indexOf(word_lower) > -1 ||
-                        word_lower.indexOf(origin_lower) > -1) {
-                        index = i;
-                        break;
+                var target = res[4];
+                if (origin) {
+                    var result = '';
+                    var index = -1;
+                    for (var i = 0; i < origin.length; i++) {
+                        var origin_lower = origin[i][0].toLowerCase();
+                        var word_lower = word.toLowerCase();
+                        if (origin_lower.indexOf(word_lower) > -1 ||
+                            word_lower.indexOf(origin_lower) > -1) {
+                            index = i;
+                            break;
+                        }
                     }
-                }
-                if (index > -1) {
-                    result = res[4][index][0].trim();
-                }
-                if (result.length < 1) {
-                    $('body').append($('<div>').html(word + ': ' + word));
+                    if (index > -1) {
+                        result = target[index][0].trim();
+                    }
+                    if (result.length < 1) {
+                        callback(word + ': ' + word);
+                    } else {
+                        callback(word + ': ' + result);
+                    }
                 } else {
-                    $('body').append($('<div>').html(word + ': ' + result));
+                    callback(word + ': ' + word);
                 }
             }
         },
@@ -83,25 +92,30 @@ var translate = function (word, line) {
                 translate(word, line);
             } else {
                 var res = eval(err.responseText);
-                var result = '';
                 var origin = res[5];
-                var index = -1;
-                for (var i = 0; i < origin.length; i++) {
-                    var origin_lower = origin[i][0].toLowerCase();
-                    var word_lower = word.toLowerCase();
-                    if (origin_lower.indexOf(word_lower) > -1 ||
-                        word_lower.indexOf(origin_lower) > -1) {
-                        index = i;
-                        break;
+                var target = res[4];
+                if (origin && target) {
+                    var result = '';
+                    var index = -1;
+                    for (var i = 0; i < origin.length; i++) {
+                        var origin_lower = origin[i][0].toLowerCase();
+                        var word_lower = word.toLowerCase();
+                        if (origin_lower.indexOf(word_lower) > -1 ||
+                            word_lower.indexOf(origin_lower) > -1) {
+                            index = i;
+                            break;
+                        }
                     }
-                }
-                if (index > -1) {
-                    result = res[4][index][0].trim();
-                }
-                if (result.length < 1) {
-                    $('body').append($('<div>').html(word + ': ' + word));
+                    if (index > -1) {
+                        result = target[index][0].trim();
+                    }
+                    if (result.length < 1) {
+                        callback(word + ': ' + word);
+                    } else {
+                        callback(word + ': ' + result);
+                    }
                 } else {
-                    $('body').append($('<div>').html(word + ': ' + result));
+                    callback(word + ': ' + word);
                 }
             }
         }

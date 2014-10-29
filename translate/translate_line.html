@@ -3,16 +3,34 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <link rel="stylesheet" href="jquery-ui.structure.css">
+    <link rel="stylesheet" href="jquery-ui.theme.css">
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script type="text/javascript" src="jquery.csv-0.71.min.js"></script>
+    <script src="translate_line.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var resource_file = 'term_cate2_dmoz.txt';
+
+            readFile(resource_file, function (result, status) {
+                var progress = status.num / status.total * 100;
+                $("#progressbar").progressbar({
+                    value: progress
+                });
+                $('.result').append(result + '\n');
+            });
+        });
+    </script>
 </head>
 <body>
+<h2>Status</h2>
 
+<div id="progressbar"></div>
+
+<h2>Result</h2>
+
+<div class="result"></div>
 </body>
 </html>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="jquery.csv-0.71.min.js"></script>
-<script src="translate_line.js"></script>
-<script type="text/javascript">
-    var resource_file = 'term_cate2_dmoz.txt';
-
-    readFile(resource_file, translate);
-</script>
