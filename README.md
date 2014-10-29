@@ -45,6 +45,8 @@
 ## 네이버 번역 자동화 
 
 * 방식 : python web parsing program
+* 개발환경 : python 2.7.8 버전
+* 실행방법 : > python 파일이름
 * 네이버 번역은 google 번역작업 후에 나온 결과로만 돌리기 가능.
 * Option 으로 Google을 Naver로 대체하거나 Google로 번역 안된 부분만 Naver로 할지 선택 가능
 
@@ -65,6 +67,8 @@
 ## ODP title, description 가져오기 
 
 * 방식 : python web parsing program
+* 개발환경 : python 2.7.8 버전
+* 실행방법 : > python 파일이름
 * 카테고리 여러개도 상관없음.
 
 > ### ODP 데이터 가져오기 [translate/dmoz_search.py](translate/dmoz_search.py)
