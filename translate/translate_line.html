@@ -10,19 +10,6 @@
     <script src="jquery-ui.js"></script>
     <script type="text/javascript" src="jquery.csv-0.71.min.js"></script>
     <script src="translate_line.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            var resource_file = 'term_cate2_dmoz.txt';
-
-            readFile(resource_file, function (result, status) {
-                var progress = status.num / status.total * 100;
-                $("#progressbar").progressbar({
-                    value: progress
-                });
-                $('.result').append(result + '\n');
-            });
-        });
-    </script>
 </head>
 <body>
 <h2>Status</h2>
