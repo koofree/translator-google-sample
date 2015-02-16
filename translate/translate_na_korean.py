@@ -17,8 +17,10 @@ def cls():
 
 url = 'http://endic.naver.com/search.nhn?sLn=en&searchOption=entry_idiom&query='
 open_file_name = 'writeVocabularyName_notMorpheme.txt'
+dictionary_file_name = 'na_korean_dictionary.txt'
 sleep_time = 20
-translate_all = False
+translate_all = True
+korean_dictionary = {}
 
 
 def isProperNoun(word):
@@ -31,35 +33,9 @@ def isAlphabet(word):
 
 def search(query):
     result = str()
-    while True:
-        try:
-            soup = BeautifulSoup(urllib2.urlopen(url + query).read())
-            break
-        except urllib2.HTTPError, e:
-            print 'sleep waiting..', sleep_time
-            time.sleep(sleep_time)
-            continue
-        except urllib2.URLError, e:
-            print 'sleep waiting..', sleep_time
-            time.sleep(sleep_time)
-            continue
-        except socket.error, e:
-            print 'sleep waiting..', sleep_time
-            time.sleep(sleep_time)
-            continue
-
-    isFirst = True
-    for span in soup.find_all('span', 'fnt_k05'):
-        isNoun = False
-        if '명사'.decode('utf8') in span.parent.text:
-            isNoun = True
-
-        if isNoun:
-            result = span.text
-            break
-        elif isFirst:
-            result = span.text
-            isFirst = False
+    lower = query.lower()
+    if korean_dictionary.has_key(lower):
+        result = korean_dictionary[lower]
 
     return result
 
@@ -69,13 +45,22 @@ def err():
 
 
 def write(write_file, word1, word2):
-    write_file.write(word1.strip().decode('utf8') + ': ' + word2.strip() + '\n')
+    write_file.write(word1.strip().decode('utf8') + ': ' + word2.strip().decode('utf8') + '\n')
 
 
 open_file = open(open_file_name)
-write_file = codecs.open(open_file_name[:open_file_name.index('.')] + '_naver.txt', 'w', "utf8")
+write_file = codecs.open(open_file_name[:open_file_name.index('.')] + '_na_korean.txt', 'w', "utf8")
+dictionary_file = open(dictionary_file_name)
 
 progress = 1
+
+for line in dictionary_file:
+    split_line = line.split(': ')
+    lower = split_line[0].lower()
+    korean_dictionary[lower] = split_line[1].strip()
+
+for word in korean_dictionary:
+    print word, korean_dictionary[word]
 
 whole_count = 0
 for line in open_file:
@@ -140,7 +125,7 @@ for line in open_file:
         cal_time = str(round(rest_time / 60)).split('.')[0] + 'm'
 
     # cls()
-    print progress, '(', fixed_count, ')', '/', whole_count, '( rest time : ', cal_time, ')'
+    # print progress, '(', fixed_count, ')', '/', whole_count, '( rest time : ', cal_time, ')'
 
     progress += 1
 
